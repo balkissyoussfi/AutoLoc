@@ -114,19 +114,28 @@ public class AgenceTests {
     @Test
     void loadPagedAgences() {
         Sort sort = Sort.by(Sort.Direction.DESC, "idAgence");
-        Pageable pageable = PageRequest.of(0, 2, sort);   // page 0, lot de 2
+        Pageable pageable = PageRequest.of(0, 2, sort);
         Page<Agence> page = fullAgenceRepository.findAll(pageable);
-
 
         StringBuilder sb = new StringBuilder();
         sb.append("\nNombre total de pages : ").append(page.getTotalPages());
-        sb.append("\nPage en cours : ").append(page.getNumber() + 1)
-                .append(" / ").append(page.getTotalPages());
-        sb.append("\nAgences de cette page :");
-        for (Agence a : page.getContent()) {
-            sb.append("\n").append(a.getIdAgence()).append(" | ").append(a.getNom())
-                    .append(" | ").append(a.getVille()).append(" | ").append(a.getAdresse());
+
+        while (true) {
+            sb.append("\n\nPage en cours : ").append(page.getNumber() + 1)
+                    .append(" / ").append(page.getTotalPages());
+            sb.append("\nAgences de cette page :");
+            for (Agence a : page.getContent()) {
+                sb.append("\n").append(a.getIdAgence()).append(" | ").append(a.getNom())
+                        .append(" | ").append(a.getVille()).append(" | ").append(a.getAdresse());
+            }
+
+            if (!page.hasNext()) {
+                break;
+            }
+            pageable = page.nextPageable();
+            page = fullAgenceRepository.findAll(pageable);
         }
+
         org.junit.jupiter.api.Assertions.fail(sb.toString());
     }
 }
