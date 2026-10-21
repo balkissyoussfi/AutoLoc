@@ -1,5 +1,5 @@
 package tn.esprit.autoloc;
-
+import tn.esprit.autoloc.service.IAgenceService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,7 +10,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.CrudRepository;
 import tn.esprit.autoloc.domain.*;
 import tn.esprit.autoloc.repository.IAgenceRepository;
-
+import org.springframework.stereotype.Repository;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.List;
@@ -20,12 +20,14 @@ import java.util.Set;
 public class AgenceTests {
 
     @Autowired
+    private IAgenceService agenceService;
+
+    @Autowired
     private AgenceRepositoryMock basicAgenceRepository;
 
     @Autowired
     private IAgenceRepository fullAgenceRepository;
 
-    // ---------- AJOUT ----------
 
     @Test
     void basicAddAgence() {
@@ -38,7 +40,6 @@ public class AgenceTests {
     }
 
     private void addAgence(CrudRepository<Agence, Long> repository) {
-        // Valeur différente à chaque exécution pour éviter les doublons d'immatriculation
         int suffixe = Math.abs((int) System.currentTimeMillis());
 
         Agence agence = new Agence();
@@ -73,7 +74,6 @@ public class AgenceTests {
         repository.save(agence);
     }
 
-    // ---------- CHARGEMENT ----------
 
     @Test
     void basicLoadAgence() {
@@ -138,7 +138,24 @@ public class AgenceTests {
 
         org.junit.jupiter.api.Assertions.fail(sb.toString());
     }
+
+    @Test
+    void createAgence() {
+        Agence a = new Agence();
+        a.setNom("Agence Centre");
+        a.setVille("Tunis");
+        a.setAdresse("Avenue Habib Bourguiba");
+        a.setTelephone("71000000");
+
+        Agence saved = agenceService.create(a);
+
+        org.junit.jupiter.api.Assertions.assertNotNull(saved.getIdAgence());
+        System.out.println("Agence créée avec l'id : " + saved.getIdAgence());
+    }
+
+
 }
 
+@Repository
 interface AgenceRepositoryMock extends CrudRepository<Agence, Long> {
 }

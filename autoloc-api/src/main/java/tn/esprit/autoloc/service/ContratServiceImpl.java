@@ -1,0 +1,28 @@
+package tn.esprit.autoloc.service;
+
+import org.springframework.stereotype.Service;
+import tn.esprit.autoloc.domain.Contrat;
+import tn.esprit.autoloc.repository.IContratRepository;
+
+@Service
+public class ContratServiceImpl extends GenericServiceImpl<Contrat, Long> implements IContratService {
+
+    public ContratServiceImpl(IContratRepository repository) {
+        super(repository);
+    }
+
+    @Override
+    public boolean check(Contrat e, boolean isNew) {
+        return e.getDateSignature() != null && e.getMontantTotal() != null;
+    }
+
+    @Override protected String getEntityName() { return "Contrat"; }
+    @Override protected Long getId(Contrat e) { return e.getIdContrat(); }
+
+    @Override
+    protected void setFields(Contrat source, Contrat target) {
+        target.setDateSignature(source.getDateSignature());
+        target.setMontantTotal(source.getMontantTotal());
+        target.setValide(source.isValide());
+    }
+}
