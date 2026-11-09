@@ -1,8 +1,8 @@
 package tn.esprit.autoloc.service;
 
 import org.springframework.stereotype.Service;
-import tn.esprit.autoloc.domain.Reservation;
 import tn.esprit.autoloc.repository.IReservationRepository;
+import tn.esprit.autoloc.domain.Reservation;
 
 @Service
 public class ReservationServiceImpl extends GenericServiceImpl<Reservation, Long> implements IReservationService {

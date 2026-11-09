@@ -1,39 +1,28 @@
 package tn.esprit.autoloc.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
+
+import lombok.RequiredArgsConstructor;
 import tn.esprit.autoloc.domain.Paiement;
+import tn.esprit.autoloc.exception.ResourceNotFoundException;
 import tn.esprit.autoloc.repository.IPaiementRepository;
 
 @Service
-public class PaiementServiceImpl extends GenericServiceImpl<Paiement, Long> implements IPaiementService {
+@RequiredArgsConstructor
+public class PaiementServiceImpl implements IPaiementService {
 
-    private static final String LECTURE_SEULE = "Paiement est en lecture seule";
+    private final IPaiementRepository repository;
 
-    public PaiementServiceImpl(IPaiementRepository repository) {
-        super(repository);
+    @Override
+    public Paiement findById(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Paiement", String.valueOf(id)));
     }
 
     @Override
-    public boolean check(Paiement p, boolean isNew) {
-        return false; // aucune écriture autorisée
+    public List<Paiement> findAll() {
+        return repository.findAll();
     }
-
-    @Override
-    public Paiement create(Paiement entity) {
-        throw new UnsupportedOperationException(LECTURE_SEULE);
-    }
-
-    @Override
-    public Paiement update(Long id, Paiement entity) {
-        throw new UnsupportedOperationException(LECTURE_SEULE);
-    }
-
-    @Override
-    public void deleteById(Long id) {
-        throw new UnsupportedOperationException(LECTURE_SEULE);
-    }
-
-    @Override protected String getEntityName() { return "Paiement"; }
-    @Override protected Long getId(Paiement p) { return p.getIdPaiement(); }
-    @Override protected void setFields(Paiement source, Paiement target) { /* lecture seule */ }
 }

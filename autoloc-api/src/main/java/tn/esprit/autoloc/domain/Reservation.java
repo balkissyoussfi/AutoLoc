@@ -1,5 +1,7 @@
 package tn.esprit.autoloc.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
@@ -26,14 +28,17 @@ public class Reservation {
     @Column(nullable = false, length = 20)
     private StatutReservation statut;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_vehicule")
     private Vehicule vehicule;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_client")
     private Client client;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_contrat")
     private Contrat contrat;

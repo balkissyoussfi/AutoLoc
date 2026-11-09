@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class BasicAgenceServiceImpl implements IAgenceService {
+public class BasicAgenceServiceImpl implements IBasicAgenceService {
 
     private final IAgenceRepository agenceRepository;
 
@@ -42,6 +42,12 @@ public class BasicAgenceServiceImpl implements IAgenceService {
     }
 
     @Override
+    public boolean hasVehicules(Long id) {
+        Set<Vehicule> vehicules = findById(id).getVehicules();
+        return vehicules != null && !vehicules.isEmpty();
+    }
+
+    @Override
     public List<Agence> findAll() {
         return agenceRepository.findAll();
     }
@@ -65,12 +71,6 @@ public class BasicAgenceServiceImpl implements IAgenceService {
             throw new ResourceNotFoundException("Agence", String.valueOf(id));
         }
         agenceRepository.deleteById(id);
-    }
-
-    @Override
-    public boolean hasVehicules(Long id) {
-        Set<Vehicule> vehicules = findById(id).getVehicules();
-        return vehicules != null && !vehicules.isEmpty();
     }
 
 }

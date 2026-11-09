@@ -1,8 +1,8 @@
 package tn.esprit.autoloc.service;
 
 import org.springframework.stereotype.Service;
-import tn.esprit.autoloc.domain.Maintenance;
 import tn.esprit.autoloc.repository.IMaintenanceRepository;
+import tn.esprit.autoloc.domain.Maintenance;
 
 @Service
 public class MaintenanceServiceImpl extends GenericServiceImpl<Maintenance, Long> implements IMaintenanceService {
