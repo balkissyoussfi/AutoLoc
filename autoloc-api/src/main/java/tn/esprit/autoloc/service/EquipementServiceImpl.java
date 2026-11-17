@@ -1,7 +1,9 @@
 package tn.esprit.autoloc.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tn.esprit.autoloc.Utils;
+import tn.esprit.autoloc.domain.Agence;
 import tn.esprit.autoloc.repository.IEquipementRepository;
 import tn.esprit.autoloc.domain.Equipement;
 
@@ -23,5 +25,12 @@ public class EquipementServiceImpl extends GenericServiceImpl<Equipement, Long> 
     @Override
     protected void setFields(Equipement source, Equipement target) {
         target.setLibelle(source.getLibelle());
+    }
+
+    @Override @Transactional
+    public void deleteById(Long id) {
+        Equipement e = findById(id);
+        e.getVehicules().forEach(v -> v.getEquipements().remove(e));
+        repository.delete(e);
     }
 }

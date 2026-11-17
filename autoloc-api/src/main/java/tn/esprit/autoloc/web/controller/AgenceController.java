@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,7 +19,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import tn.esprit.autoloc.calcul.VehiculeOffre;
 import tn.esprit.autoloc.domain.Agence;
 import tn.esprit.autoloc.service.IAgenceService;
 
@@ -81,9 +79,9 @@ public class AgenceController {
         agenceService.deleteById(id);
     }
 
-    @Operation(summary = "Simuler le tarif des véhicules d'une agence")
-    @GetMapping("{id}/simulation")
-    public String simuler(@PathVariable Long id, @RequestParam int nbJours, @RequestParam VehiculeOffre offre) {
-        return agenceService.simuler(agenceService.findById(id), nbJours, offre);
+    @Operation(summary = "Modifier une agence en ajoutant une liste de nouveaux employés")
+    @PutMapping("{id}/employes")
+    public Agence updateAvecEmployes(@PathVariable Long id, @RequestBody Agence agence) {
+        return agenceService.updateAvecEmployes(id, agence);
     }
 }

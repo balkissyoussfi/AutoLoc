@@ -1,14 +1,15 @@
 package tn.esprit.autoloc.service;
-import tn.esprit.autoloc.Utils;
-import java.util.Set;
-import tn.esprit.autoloc.domain.Vehicule;
-import tn.esprit.autoloc.exception.ResourceNotFoundException;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import tn.esprit.autoloc.domain.Agence;
-import tn.esprit.autoloc.repository.IAgenceRepository;
 
 import java.util.List;
+import java.util.Set;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import tn.esprit.autoloc.Utils;
+import tn.esprit.autoloc.domain.Agence;
+import tn.esprit.autoloc.domain.Vehicule;
+import tn.esprit.autoloc.exception.ResourceNotFoundException;
+import tn.esprit.autoloc.repository.IAgenceRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -72,5 +73,4 @@ public class BasicAgenceServiceImpl implements IBasicAgenceService {
         }
         agenceRepository.deleteById(id);
     }
-
 }

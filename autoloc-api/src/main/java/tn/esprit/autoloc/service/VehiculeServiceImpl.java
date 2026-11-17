@@ -3,20 +3,28 @@ package tn.esprit.autoloc.service;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tn.esprit.autoloc.Utils;
 import tn.esprit.autoloc.calcul.IOffreStrategy;
 import tn.esprit.autoloc.calcul.VehiculeOffre;
 import tn.esprit.autoloc.domain.Vehicule;
+import tn.esprit.autoloc.repository.IAgenceRepository;
+import tn.esprit.autoloc.repository.IEquipementRepository;
 import tn.esprit.autoloc.repository.IVehiculeRepository;
 
 @Service
 public class VehiculeServiceImpl extends GenericServiceImpl<Vehicule, Long> implements IVehiculeService {
 
     private final Map<String, IOffreStrategy> offres;
+    private final IAgenceRepository agenceRepo;
+    private final IEquipementRepository equipementRepo;
 
-    public VehiculeServiceImpl(IVehiculeRepository vehiculeRepository, Map<String, IOffreStrategy> offres) {
+    public VehiculeServiceImpl(IVehiculeRepository vehiculeRepository, Map<String, IOffreStrategy> offres,
+                               IAgenceRepository agenceRepo, IEquipementRepository equipementRepo) {
         super(vehiculeRepository);
         this.offres = offres;
+        this.agenceRepo = agenceRepo;
+        this.equipementRepo = equipementRepo;
     }
 
     @Override
@@ -56,5 +64,18 @@ public class VehiculeServiceImpl extends GenericServiceImpl<Vehicule, Long> impl
     @Override
     public double calculTarif(Vehicule vehicule, int nbJours, VehiculeOffre offre) {
         return offres.get(offre.name()).calculer(vehicule.getTarifJournalier().doubleValue(), nbJours);
+    }
+
+    @Override @Transactional
+    public void desaffecter(Long id) { findById(id).setAgence(null); }
+
+    @Override @Transactional
+    public void affecterAgence(Long idV, Long idA) {
+        findById(idV).setAgence(agenceRepo.findById(idA).orElseThrow());
+    }
+
+    @Override @Transactional
+    public void affecterEquipement(Long idV, Long idE) {
+        findById(idV).getEquipements().add(equipementRepo.findById(idE).orElseThrow());
     }
 }

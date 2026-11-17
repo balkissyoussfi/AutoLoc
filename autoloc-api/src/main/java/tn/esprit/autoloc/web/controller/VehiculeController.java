@@ -34,4 +34,13 @@ public class VehiculeController {
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteById(@PathVariable Long id) { vehiculeService.deleteById(id); }
+
+    @PutMapping("{id}/desaffecter")
+    public void desaffecter(@PathVariable Long id) { vehiculeService.desaffecter(id); }
+
+    @PutMapping("{idV}/agences/{idA}")
+    public void affecterAgence(@PathVariable Long idV, @PathVariable Long idA) { vehiculeService.affecterAgence(idV, idA); }
+
+    @PutMapping("{idV}/equipements/{idE}")
+    public void affecterEquipement(@PathVariable Long idV, @PathVariable Long idE) { vehiculeService.affecterEquipement(idV, idE); }
 }

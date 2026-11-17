@@ -1,3 +1,4 @@
+
 package tn.esprit.autoloc.domain;
 
 import jakarta.persistence.*;
@@ -34,4 +35,24 @@ public class Agence {
 
     @OneToMany(mappedBy = "agence", fetch = FetchType.LAZY)
     private Set<Employe> employes = new HashSet<>();
+
+    // Effectif de l'agence
+    private Integer effectif = 0;
+
+    @PrePersist
+    void initEffectif() {
+        if (effectif == null) {
+            effectif = 0;
+        }
+    }
+
+    public void addEmploye(Employe e) {
+        employes.add(e);
+        e.setAgence(this);
+    }
+
+    public void removeEmploye(Employe e) {
+        employes.remove(e);
+        e.setAgence(null);
+    }
 }
